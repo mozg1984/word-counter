@@ -12,11 +12,11 @@ import java.util.regex.Pattern;
 
 public class WordCounter {
     public static final String WORD_PATTERN = "\\p{L}+(-\\p{L}+)?|\\d+";
-    private String sourceUrl;
+    private URL sourceUrl;
     private Map<String, Integer> wordsMap;
     private Long totalCounter;
 
-    public WordCounter(String sourceUrl) {
+    public WordCounter(URL sourceUrl) {
         this.sourceUrl = sourceUrl;
         this.wordsMap = new HashMap<>();
         this.totalCounter = 0L;
@@ -24,8 +24,7 @@ public class WordCounter {
 
     public void process() {
         try {
-            URL source = new URL(sourceUrl);
-            URLConnection urlConnection = source.openConnection();
+            URLConnection urlConnection = sourceUrl.openConnection();
             BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(urlConnection.getInputStream())
             );
@@ -65,6 +64,10 @@ public class WordCounter {
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .forEach(pair -> System.out.println(pair.getKey() + ": " + pair.getValue()));
+    }
+
+    public Long getTotalCounter() {
+        return totalCounter;
     }
 
     public void reset() {
