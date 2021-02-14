@@ -14,10 +14,12 @@ public class WordCounter {
     public static final String WORD_PATTERN = "\\p{L}+(-\\p{L}+)?|\\d+";
     private String sourceUrl;
     private Map<String, Integer> wordsMap;
+    private Long totalCounter;
 
     public WordCounter(String sourceUrl) {
         this.sourceUrl = sourceUrl;
         this.wordsMap = new HashMap<>();
+        this.totalCounter = 0L;
     }
 
     public void process() {
@@ -45,6 +47,7 @@ public class WordCounter {
 
                     counter = wordsMap.get(word);
                     wordsMap.put(word, (counter == null ? 0 : counter.intValue()) + 1);
+                    totalCounter++;
                 }
             }
 
@@ -55,7 +58,7 @@ public class WordCounter {
     }
 
     public void printResult() {
-        System.out.println("Result of counting words:\n<word>: <quantity>\n");
+        System.out.println("Result of counting words:\nTotal word count: " + totalCounter + "\n<word>: <quantity>");
 
         wordsMap
                 .entrySet()
@@ -66,5 +69,6 @@ public class WordCounter {
 
     public void reset() {
         wordsMap.clear();
+        totalCounter = 0L;
     }
 }
